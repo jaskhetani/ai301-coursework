@@ -1,0 +1,1 @@
+Hi! I’d like to work on this as a first contribution. I’ll first reproduce the output-parser crash when the fallback receives a top-level JSON array using the existing xfailed test, record the environment and traceback, then trace the fallback handling and report what I find before proposing a change.
