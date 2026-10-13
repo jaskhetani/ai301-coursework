@@ -1,0 +1,16 @@
+# Rubric: is this plan ready to post and build from?
+
+## Checks
+
+| Check | Evidence | Pass condition | Weight |
+|---|---|---|---|
+| diagnosis-grounded | The candidate plan's stated cause and mechanism read against the issue context, the repro-evidence artifacts and controls, and relevant thread findings | The diagnosis explains the reproduced behavior without contradicting any artifact or control. It distinguishes demonstrated facts from hypotheses and does not choose a cause that the package's own evidence rules out. | required |
+| scope-bounded | The plan's in-scope and out-of-scope commitments, named files or components, proposed changes, and plan comment read against the issue's requested behavior | The work is one coherent change sufficient for the issue. Necessary regression tests are included, while unrelated refactors, migrations, new features, cross-platform redesigns, and while-in-the-area cleanup are explicitly deferred. A smaller supported fix may pass when the deferral and its consequence are stated. | required |
+| approach-executable | The plan's files or code areas, chosen mechanism, order of work, and acceptance condition read against the grounded diagnosis | A contributor can begin implementation without deciding the core layer, mechanism, or ownership during the build. The plan names where the change belongs and how it addresses the cause; investigation may resolve a stated secondary detail but cannot substitute for a chosen approach. | required |
+| tests-decisive | The plan's test commands, inputs, controls, and expected post-fix observations read against the repro evidence's trigger and artifacts | The test plan reruns the reproduced trigger through the real changed path and names the observable result that distinguishes fixed from still broken. It adds or updates a focused regression check when practical and preserves a relevant control; a generic full-suite run or “should feel right” is insufficient. | required |
+| uncertainty-honest | The plan's risks, unknowns, alternatives, exclusions, and any Deviations note read against the certainty of its diagnosis and approach | Material uncertainty is stated with a bounded way to resolve or contain it, and the plan does not present an untested cause or outcome as certain. Risks may change a secondary implementation detail, but unresolved choices do not defer the entire design to build time. | required |
+| thread-and-conventions | The candidate plan comment read against the issue thread highlights or live thread, repo-facts contribution policy and templates, open or prior approaches, and the candidate plan | The comment accurately summarizes the grounded, bounded approach and test signal, engages explicit maintainer direction or competing work, and satisfies every stated comment convention, including AI-use disclosure when required. It is not interchangeable boilerplate and does not race or ignore an existing direction without explanation. | required |
+
+## Verdict rule
+
+Accept only when every required check passes. Reject when any required check fails or is unclear. Preferred checks, if added later, never change the verdict. `unclear` means the package lacks evidence needed to verify the check and therefore counts as a failure rather than permission to improvise.
