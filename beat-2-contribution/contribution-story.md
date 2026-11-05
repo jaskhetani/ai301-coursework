@@ -76,16 +76,16 @@ drafted, what you did with the draft.]
 
 ## Why I Chose This Issue
 
-I found this issue on page 2 of the AI301 Issue Selection site after parsing twelve saved pages containing 1,200 unique issues. My scout rejected the seemingly easiest alternatives because they already had claim comments, open pull requests, maintainer reservations, or contribution restrictions. It accepted Lind #375 as straightforward: the repository is active, the issue had no assignee or comments, no pull request was implementing it, and the requested Markdown guidance was still absent from `docs/contribute/styleguide.md`.
+I selected OpenChemistry/avogadrolibs #3184 after tightening my scout to account for issue age and maintainer responsiveness. I withdrew my older Lind claim and publicly claimed only the unclaimed `qtplugins/surfaces/` slice: `surfacedialog.ui` and `orbitalwidget.ui`. The repository is active, the issue is maintainer-authored and recently updated, and the requested change is a small, testable Qt accessibility improvement. My claim is https://github.com/OpenChemistry/avogadrolibs/issues/3184#issuecomment-6671133419.
 
-This issue fits my low-risk strategy because the maintainer already supplied the three rules that need to be documented, so the contribution is bounded without being a copy-paste change. I hope to learn how an established Rust project organizes contributor guidance and reviews a small documentation proposal. The scout was useful at detecting stale issue labels, but its broad search surfaced many false positives; live checks of the complete comment thread and linked pull requests were essential. I claimed the issue on November 5, 2026: https://github.com/Lind-Project/lind-wasm/issues/375#issuecomment-6667018036
+This slice fits my low-risk strategy because it changes only existing Qt Designer metadata and has a clear observable result: a label mnemonic should focus its associated input. The main judgment call is choosing the correct primary widget on rows with multiple controls, so I will verify each mapping instead of applying buddies mechanically.
 
 **Toolkit**
 
-- Tool: issue-scout, using my low-risk language profile and required availability, activity, AI-policy, and scope checks.
-- What it produced: An accept verdict with a straightforward difficulty note for Lind #375 after confirming the exact documentation gap.
+- Tool: issue-scout, using availability, activity, AI-policy, scope, issue-age, and maintainer-responsiveness checks.
+- What it produced: A low-risk recommendation for the unclaimed surfaces slice of avogadrolibs #3184.
 - Difficulties: Course-site issues frequently remained listed after being claimed, superseded, or covered by an open pull request.
-- What changed: I treated live comments and linked pull requests as decisive and rejected every stale or contested candidate before choosing this one.
+- What changed: I rechecked live GitHub state, withdrew the older Lind claim, and kept only one public active claim.
 
 ---
 
@@ -93,26 +93,26 @@ This issue fits my low-risk strategy because the maintainer already supplied the
 
 **Problem Description**
 
-[In your own words, what is broken or missing?]
+Eight visible field-label candidates in the claimed Qt Designer files do not identify their input widgets through Qt's `buddy` property. Activating a label mnemonic therefore cannot transfer keyboard focus to the intended control.
 
 **Expected Behavior**
 
-[What should happen?]
+Each label that names one field should have a buddy pointing to that field's primary input widget. Descriptive or group labels should remain unlinked.
 
 **Current Behavior**
 
-[What actually happens?]
+The files are valid and compile through Qt `uic`, but all seven labels in `surfacedialog.ui` and the one label in `orbitalwidget.ui` currently have no buddy metadata.
 
 **Affected Components**
 
-[Which parts of the codebase are involved?]
+Only `avogadro/qtplugins/surfaces/surfacedialog.ui` and `avogadro/qtplugins/surfaces/orbitalwidget.ui` are in my claimed slice. No C++ behavior, translations, build files, or unrelated dialogs are in scope.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: Codex repository inspection, constrained to OpenChemistry's permitted AI levels 0-1.
+- What it produced: An inventory of eight missing buddies and a candidate label-to-control map for my review.
+- Difficulties: Four rows contain secondary controls, so proximity alone cannot prove the intended buddy.
+- What changed: I limited the plan to each row's primary field and reserved final mapping approval and implementation for myself.
 
 ---
 
@@ -120,26 +120,27 @@ This issue fits my low-risk strategy because the maintainer already supplied the
 
 **Environment Setup**
 
-I forked and cloned `Lind-Project/lind-wasm` on Microsoft Windows 11 Pro 10.0.26100 with Git 2.51.0.windows.1 and Python 3.13.7. I checked upstream commit `908cb5a93b511f1db62e20aab4975f4401f7c6d6`. A full checkout produced case-collision changes from vendored Linux headers on NTFS, so I limited the fresh clone to `docs/` and `.github/` with Git sparse checkout; this does not affect the documentation file under review.
+I forked `OpenChemistry/avogadrolibs` to `jaskhetani/avogadrolibs` and made a partial clone at upstream commit `cb0e94852889da9f7288bd1e58241e69990935a7`. Because the host lacked Qt build tools, I built the local Docker image `ai301-avogadro-qt:24.04` with Ubuntu 24.04 and the repository's Qt 6/toolchain dependencies. Its recipe is locally ignored and will not enter the contribution.
 
 **Steps to Reproduce**
 
-1. From the clone root, run `git grep -n -i -E "constant|crate-wide|project-wide|file-local" -- docs/contribute/styleguide.md`.
-2. Run `git show HEAD:docs/contribute/styleguide.md` to display the complete current source page.
-3. The targeted search produces no output, and the page contains only the default Rust style link and two `cargo fmt` commands. It has no guidance for local, crate-wide, or project-wide constants.
+1. Mount the unmodified clone read-only at `/workspace` in the container.
+2. Run `xmllint --noout` on both claimed `.ui` files.
+3. Run Qt 6 `uic` on each file, writing generated headers only to `/tmp`.
+4. Inspect the source and confirm that its seven plus one labels lack `buddy` properties.
 
 **Reproduction Evidence**
 
-- **Commit showing reproduction:** None; the gap was verified against upstream commit `908cb5a93b511f1db62e20aab4975f4401f7c6d6` without changing the repository.
-- **Screenshots/logs:** The zero-match `git grep` result and complete eight-line `styleguide.md` source are recorded in `repro-draft.md`.
-- **My findings:** The documentation gap is current and reproducible. `docs/contribute/styleguide.md` is the smallest likely location because `CONTRIBUTING.md` already links to it, while a separate page would also require a `mkdocs.yml` navigation change.
+- **Commit showing reproduction:** None; the baseline was verified at upstream commit `cb0e94852889da9f7288bd1e58241e69990935a7` without changing the clone.
+- **Screenshots/logs:** `repro-draft.md` records the passing XML/`uic` baseline and generated-header line counts.
+- **My findings:** The source is structurally valid, isolating the gap to missing accessibility metadata. Runtime keyboard-focus behavior remains a post-change check.
 
 **Toolkit**
 
-- Tool: repro-check, used on the public claim and a rerunnable documentation-gap report.
-- What it produced: An accept verdict on all six required checks, including direct evidence that the guidance is absent at the pinned commit.
-- Difficulties: Its first accepted draft used a PowerShell-only read command and called a condensed excerpt complete.
-- What changed: I replaced that command with shell-neutral `git show`, restored the exact Markdown link and code fence, and added explicit Expected and Actual evidence.
+- Tool: Docker plus `xmllint` and Qt 6 `uic`, with Codex assembling the read-only command.
+- What it produced: A repeatable passing baseline for both target files and evidence that all eight candidate labels lack buddies.
+- Difficulties: Docker Desktop was initially stopped and the CI-aligned dependency image is large.
+- What changed: I started Docker Desktop and kept the recipe local and Git-ignored so it cannot pollute either repository.
 
 ---
 
@@ -147,18 +148,17 @@ I forked and cloned `Lind-Project/lind-wasm` on Microsoft Windows 11 Pro 10.0.26
 
 **Analysis**
 
-The missing guidance is a documentation gap rather than a runtime defect. `CONTRIBUTING.md` directs contributors to `docs/contribute/styleguide.md`, but that page currently contains only the default Rust style link and two formatting commands. Issue #375 and its linked discussion provide the three constant scopes that the page must distinguish.
+This is a Qt Designer metadata fix. A `QLabel` buddy names the input widget that should receive focus when the user activates the label's mnemonic. Existing dialogs establish the local pattern; no C++ logic is required.
 
 **Proposed Solution**
 
-Add one short constant-placement section to the existing style guide, using the terminology confirmed by the issue discussion. Keep the change documentation-only: do not move constants, alter Rust code, create a new page, or modify navigation unless the maintainer asks for a different location.
+Add only appropriate `buddy` properties in the two claimed files. Candidate primary mappings are Surface to `surfaceCombo`, Color by to `propertyCombo`, Colormap to `colormapCombo`, Resolution to `resolutionCombo`, Isosurface Value to `isosurfaceDoubleSpinBox`, Smoothing to `smoothingCombo`, Frame to `stepValue`, and Quality to `combo_quality`. I will confirm each before typing it and skip any group label.
 
 **Implementation Plan**
 
-1. Give Gemini/Codex the issue thread, linked discussion, current style-guide page, and repository contribution rules. Use the AI tools to compare the sources, identify ambiguities, propose a concise outline, and flag wording that claims more than the maintainers specified.
-2. I will choose the final wording and type the documentation change in `docs/contribute/styleguide.md`, understanding and approving every changed line. Gemini/Codex may explain Rust terminology and review the diff, but it will not independently decide project policy or submit generated work without my review.
-3. Give Gemini/Codex the completed diff and repository commands so it can suggest focused validation checks and look for scope drift, broken Markdown, or missing disclosure. I will run the checks locally, inspect their output, and decide whether the change is ready to commit and submit.
-4. If I switch to an OpenChemistry backup, keep the same boundary required by its AI policy: AI may inspect, explain, plan, suggest tests, and review; I will select the issue slice, implement it, run it, and verify every changed line.
+1. Gemini/Codex may inspect the issue, repository instructions, and UI files; explain buddies; suggest mappings and tests; and review my eventual diff.
+2. I will decide the mappings and personally type and understand every XML edit, as required by OpenChemistry's AI policy.
+3. I will run the checks, inspect generated wiring, and manually test keyboard focus. AI will not author or submit the contribution.
 
 [Record deviations here as they happen: what changed mid-build and
 why. A recorded deviation is honest work; silent drift is not.]
@@ -174,17 +174,14 @@ why. A recorded deviation is honest work; silent drift is not.]
 
 ## Testing Strategy
 
-[What observable checks prove the fix: your reproduction steps re-run
-against the built change (before and after), and the repo's own test
-suite or checks with the outcome shown. "Tests pass" with nothing
-observable named is not a strategy.]
+Re-run `xmllint --noout` and Qt 6 `uic` for both changed files in the pinned Docker image. Confirm the diff contains only intended `buddy` properties and generated headers contain matching `setBuddy(...)` calls. Finally, build/run the affected UI and activate each mnemonic to verify focus moves to the intended enabled control. Static checks prove valid syntax and generated wiring; the manual check proves user-visible behavior.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: Dockerized Qt 6 validation planned by Codex and executed/verified by me.
+- What it produced: A passing pre-change XML/`uic` baseline and a precise post-change checklist.
+- Difficulties: A headless container cannot prove live keyboard-focus or screen-reader behavior.
+- What changed: I added a required manual application check instead of treating generated code as complete accessibility proof.
 
 ---
 

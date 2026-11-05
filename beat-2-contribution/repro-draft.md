@@ -1,45 +1,41 @@
-# Reproduction report for Lind #375
+# Baseline report for OpenChemistry/avogadrolibs #3184
 
 ## Environment
 
-- Microsoft Windows 11 Pro 10.0.26100
-- Git 2.51.0.windows.1
-- Python 3.13.7
-- Fork checkout at upstream commit `908cb5a93b511f1db62e20aab4975f4401f7c6d6`
-- Sparse checkout of `docs/` and `.github/`; this avoids unrelated case-colliding vendored Linux headers on Windows.
+- Microsoft Windows 11 Pro 10.0.26100 with Docker Desktop
+- Fork: `jaskhetani/avogadrolibs`
+- Upstream commit: `cb0e94852889da9f7288bd1e58241e69990935a7`
+- Local image: `ai301-avogadro-qt:24.04` (Ubuntu 24.04, Qt `uic` 6.4.2, CMake 3.28.3, Ninja 1.11.1, and libxml 2.9.14)
+- Repository mounted read-only at `/workspace`
 
 ## Steps
 
-1. From the clone root, run:
+1. Parse the two claimed UI files as XML:
 
    ```text
-   git grep -n -i -E "constant|crate-wide|project-wide|file-local" -- docs/contribute/styleguide.md
+   xmllint --noout avogadro/qtplugins/surfaces/surfacedialog.ui avogadro/qtplugins/surfaces/orbitalwidget.ui
    ```
 
-2. Observe that the command prints no matches.
-3. In any shell, run:
+2. Generate C++ headers from each unmodified Qt Designer file:
 
    ```text
-   git show HEAD:docs/contribute/styleguide.md
+   /usr/lib/qt6/libexec/uic avogadro/qtplugins/surfaces/surfacedialog.ui -o /tmp/ui_surfacedialog.h
+   /usr/lib/qt6/libexec/uic avogadro/qtplugins/surfaces/orbitalwidget.ui -o /tmp/ui_orbitalwidget.h
    ```
+
+3. Inspect the label widgets in both source files. `surfacedialog.ui` has seven `QLabel` widgets and `orbitalwidget.ui` has one; none currently has a `buddy` property.
 
 ## Evidence
 
-The relevant content of the current page contains only the default Rust style link and two `cargo fmt` commands:
+The baseline command completed with:
 
-````markdown
-# Rust Style Guide
-
-Rust code in `lind-wasm` follows the [default Rust style](https://doc.rust-lang.org/style-guide/index.html) and should be auto-formatted:
-
-```bash
-cargo fmt --all --manifest-path src/wasmtime/Cargo.toml
-cargo fmt --all --manifest-path src/lind-boot/Cargo.toml
+```text
+BASELINE_UI_VALIDATION=PASS
+  422 /tmp/ui_surfacedialog.h
+  143 /tmp/ui_orbitalwidget.h
+  565 total
 ```
-````
 
-**Expected:** The style guide explains where local, crate-wide, and project-wide shared constants belong.
+**Expected after the fix:** Each field label in the claimed files names its corresponding input widget through a Qt `buddy` property, so its mnemonic can move keyboard focus to that control. Descriptive or group labels remain unlinked.
 
-**Actual:** The page covers the default Rust style and `cargo fmt`, with no constant-placement guidance.
-
-The targeted search returns no output, directly showing the missing contributor guidance. This reproduces the documentation gap described in issue #375; it does not test runtime behavior. The existing style-guide page is the smallest likely location because `CONTRIBUTING.md` already links to it, while a new page would also require navigation changes.
+**Actual at the pinned baseline:** Both files are valid XML and compile through Qt `uic`, but all eight field-label candidates lack a `buddy` property. This is static evidence for the accessibility gap; keyboard-focus behavior must still be verified in a built application after the human-authored change.
