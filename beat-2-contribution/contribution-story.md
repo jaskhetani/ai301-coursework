@@ -56,7 +56,7 @@ one in the week it belongs to.
 
 **Unit 5: Built a low-risk scout with a traceable, bug-first search strategy**
 
-I built GitHub searches for small Python, Rust, and Go bugs, then ranked unassigned and recently updated results ahead of older or discussion-heavy work. My first scan filled all five slots with easy bugs from one repository, but its contribution policy banned AI-assisted work, so the scout correctly rejected every candidate. I added a one-result-per-repository cap and excluded linked PRs during free search, then direct-graded the remaining low-risk options until five passed every required check. The scout also caught that an issue I reserved on the course site already had an upstream claim and open PR, so I rejected it instead of duplicating someone else's work.
+I built GitHub searches for small Python, Rust, and Go bugs, then ranked unassigned and recently updated results ahead of older or discussion-heavy work. My first scan filled all five slots with easy bugs from one repository, but its contribution policy banned AI-assisted work, so the scout correctly rejected every candidate. I added a one-result-per-repository cap and excluded linked PRs during free search, then direct-graded the remaining low-risk options until five passed every required check. The scout also caught that an issue I reserved on the course site already had an upstream claim and open PR, so I rejected it instead of duplicating someone else's work. After claiming Lind #375, I added issue-age and measured maintainer-responsiveness checks; the older Lind issue failed the stricter regrade, so I identified two fresh, actively maintained course-site backups without making competing public claims.
 
 **Unit 6: Guarded the public claim and cached repository-specific instructions**
 
@@ -147,19 +147,18 @@ I forked and cloned `Lind-Project/lind-wasm` on Microsoft Windows 11 Pro 10.0.26
 
 **Analysis**
 
-[Your analysis of the root cause: what is causing the issue, traced
-to the files and functions involved.]
+The missing guidance is a documentation gap rather than a runtime defect. `CONTRIBUTING.md` directs contributors to `docs/contribute/styleguide.md`, but that page currently contains only the default Rust style link and two formatting commands. Issue #375 and its linked discussion provide the three constant scopes that the page must distinguish.
 
 **Proposed Solution**
 
-[High-level description of your fix approach, and what you are
-deliberately NOT changing.]
+Add one short constant-placement section to the existing style guide, using the terminology confirmed by the issue discussion. Keep the change documentation-only: do not move constants, alter Rust code, create a new page, or modify navigation unless the maintainer asks for a different location.
 
 **Implementation Plan**
 
-1. [Modify file X to do Y]
-2. [Add or change Z]
-3. [Update tests]
+1. Give Gemini/Codex the issue thread, linked discussion, current style-guide page, and repository contribution rules. Use the AI tools to compare the sources, identify ambiguities, propose a concise outline, and flag wording that claims more than the maintainers specified.
+2. I will choose the final wording and type the documentation change in `docs/contribute/styleguide.md`, understanding and approving every changed line. Gemini/Codex may explain Rust terminology and review the diff, but it will not independently decide project policy or submit generated work without my review.
+3. Give Gemini/Codex the completed diff and repository commands so it can suggest focused validation checks and look for scope drift, broken Markdown, or missing disclosure. I will run the checks locally, inspect their output, and decide whether the change is ready to commit and submit.
+4. If I switch to an OpenChemistry backup, keep the same boundary required by its AI policy: AI may inspect, explain, plan, suggest tests, and review; I will select the issue slice, implement it, run it, and verify every changed line.
 
 [Record deviations here as they happen: what changed mid-build and
 why. A recorded deviation is honest work; silent drift is not.]
