@@ -1,4 +1,4 @@
-# Contribution: Add "constant placement" style guidance to documentation
+# Contribution: Link Qt field labels to their input widgets
 
 Path: `beat-2-contribution/contribution-story.md`
 
@@ -10,7 +10,7 @@ files and no evidence uploads are part of Assignment 5.
 **Contribution Number:** [1]
 **Student:** Jas Khetani
 **GitHub Username:** jaskhetani
-**Issue:** https://github.com/Lind-Project/lind-wasm/issues/375
+**Issue:** https://github.com/OpenChemistry/avogadrolibs/issues/3184
 **Pull Request:** [GitHub PR link, once opened]
 
 One repository, built across units 5 to 8, telling the whole story of your real
@@ -196,6 +196,8 @@ built, decisions you made when you made them, wrong turns included.]
 **November 5, 2026**
 
 I selected and claimed Lind #375 after the scout accepted it as a straightforward documentation task. I forked the repository, created a docs-only sparse checkout to avoid Windows case-collision noise from vendored Linux headers, recorded the repository rules in the excluded `CLAUDE.local.md`, and reproduced the missing guidance at upstream commit `908cb5a`.
+
+After adding issue-age and maintainer-responsiveness checks, I regraded Lind #375 and withdrew because it failed both new safeguards. I then claimed the unclaimed `qtplugins/surfaces/` slice of OpenChemistry/avogadrolibs #3184. The public withdrawal is https://github.com/Lind-Project/lind-wasm/issues/375#issuecomment-6671132875 and the replacement claim is https://github.com/OpenChemistry/avogadrolibs/issues/3184#issuecomment-6671133419. I kept OpenChemistry #3100 reserved only on the course site as a backup, not as a second public claim.
 
 **[Date]**
 
