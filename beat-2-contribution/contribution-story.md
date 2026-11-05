@@ -1,4 +1,4 @@
-# Contribution: [Issue Title]
+# Contribution: Add "constant placement" style guidance to documentation
 
 Path: `beat-2-contribution/contribution-story.md`
 
@@ -8,10 +8,9 @@ format criteria grade exactly that. Your course repo link is the whole submissio
 files and no evidence uploads are part of Assignment 5.
 
 **Contribution Number:** [1]
-**Student:** [Student name]
-**GitHub Username:** [your GitHub username, exactly as it appears on your profile - no @, no
-profile URL. Your comments upstream are identified by this name.]
-**Issue:** [GitHub issue link]
+**Student:** Jas Khetani
+**GitHub Username:** jaskhetani
+**Issue:** https://github.com/Lind-Project/lind-wasm/issues/375
 **Pull Request:** [GitHub PR link, once opened]
 
 One repository, built across units 5 to 8, telling the whole story of your real
@@ -55,16 +54,13 @@ happened; these entries are the toolkit's own timeline.
 All four entries are graded. Keep every heading below, and fill each
 one in the week it belongs to.
 
-**Unit 5: [one line on the tool work]**
+**Unit 5: Built a low-risk scout with a traceable, bug-first search strategy**
 
-[2-4 sentences: what you built (the scout, your strategy), what broke
-or fell short, what changed because of it.]
+I built GitHub searches for small Python, Rust, and Go bugs, then ranked unassigned and recently updated results ahead of older or discussion-heavy work. My first scan filled all five slots with easy bugs from one repository, but its contribution policy banned AI-assisted work, so the scout correctly rejected every candidate. I added a one-result-per-repository cap and excluded linked PRs during free search, then direct-graded the remaining low-risk options until five passed every required check. The scout also caught that an issue I reserved on the course site already had an upstream claim and open PR, so I rejected it instead of duplicating someone else's work.
 
-**Unit 6: [one line on the tool work]**
+**Unit 6: Guarded the public claim and cached repository-specific instructions**
 
-[2-4 sentences: the voice-guard, the repo-memory file. What broke or
-fell short, and what changed because of it. "Nothing broke" counts when
-it is true - say how you know.]
+The voice guard checked the claim that I posted through Claude Code, and the accepted comment named my first step without promising an outcome. I created a 31-line `CLAUDE.local.md` with the DCO, PR-title, documentation-check, and AI-disclosure rules, then excluded it through `.git/info/exclude`. A full Windows checkout appeared dirty because vendored Linux headers differ only by capitalization, so I changed the fresh clone to a docs-only sparse checkout and recorded that limitation in the memory file.
 
 **Unit 7: [one line on the tool work]**
 
@@ -80,24 +76,16 @@ drafted, what you did with the draft.]
 
 ## Why I Chose This Issue
 
-[1-2 paragraphs in your own words: how you searched, what your scan
-surfaced, what your scout's verdict said, why this issue fits your
-profile, and what you hope to learn. If your scout's verdict on it
-was reject and you chose it anyway, say so here and say why; choosing
-against your own tool silently is what loses points. Close with an
-honest read of the tool itself: where the scout fell short on a real
-wild search and what you changed or would change, or what convinced
-you it held up. **Record the link to your claim comment in this section too.**
-Not claimed yet? Write `claim pending` and today's date where the link goes,
-and add the link the moment your claim lands.]
+I found this issue on page 2 of the AI301 Issue Selection site after parsing twelve saved pages containing 1,200 unique issues. My scout rejected the seemingly easiest alternatives because they already had claim comments, open pull requests, maintainer reservations, or contribution restrictions. It accepted Lind #375 as straightforward: the repository is active, the issue had no assignee or comments, no pull request was implementing it, and the requested Markdown guidance was still absent from `docs/contribute/styleguide.md`.
+
+This issue fits my low-risk strategy because the maintainer already supplied the three rules that need to be documented, so the contribution is bounded without being a copy-paste change. I hope to learn how an established Rust project organizes contributor guidance and reviews a small documentation proposal. The scout was useful at detecting stale issue labels, but its broad search surfaced many false positives; live checks of the complete comment thread and linked pull requests were essential. I claimed the issue on November 5, 2026: https://github.com/Lind-Project/lind-wasm/issues/375#issuecomment-6667018036
 
 **Toolkit**
 
-- Tool: issue-scout (your scout: your search strategy, your rubric),
-  and how you used it
-- What it produced: [the scan and its verdict on this issue, described]
-- Difficulties: [where it fell short, or "none met" if none did]
-- What changed: [what you patched or would update, or "nothing"]
+- Tool: issue-scout, using my low-risk language profile and required availability, activity, AI-policy, and scope checks.
+- What it produced: An accept verdict with a straightforward difficulty note for Lind #375 after confirming the exact documentation gap.
+- Difficulties: Course-site issues frequently remained listed after being claimed, superseded, or covered by an open pull request.
+- What changed: I treated live comments and linked pull requests as decisive and rejected every stale or contested candidate before choosing this one.
 
 ---
 
@@ -132,31 +120,26 @@ and add the link the moment your claim lands.]
 
 **Environment Setup**
 
-[What a stranger would need to stand this up: your operating system,
-the relevant versions (language, runtime, package manager, the project
-itself), and how you set the project up. Then the challenges you faced
-and how you solved them, or that none came up.]
+I forked and cloned `Lind-Project/lind-wasm` on Microsoft Windows 11 Pro 10.0.26100 with Git 2.51.0.windows.1 and Python 3.13.7. I checked upstream commit `908cb5a93b511f1db62e20aab4975f4401f7c6d6`. A full checkout produced case-collision changes from vendored Linux headers on NTFS, so I limited the fresh clone to `docs/` and `.github/` with Git sparse checkout; this does not affect the documentation file under review.
 
 **Steps to Reproduce**
 
-1. [Step 1]
-2. [Step 2]
-3. [Observed result]
+1. From the clone root, run `git grep -n -i -E "constant|crate-wide|project-wide|file-local" -- docs/contribute/styleguide.md`.
+2. Run `git show HEAD:docs/contribute/styleguide.md` to display the complete current source page.
+3. The targeted search produces no output, and the page contains only the default Rust style link and two `cargo fmt` commands. It has no guidance for local, crate-wide, or project-wide constants.
 
 **Reproduction Evidence**
 
-- **Commit showing reproduction:** [link to commit in your fork]
-- **Screenshots/logs:** [if applicable]
-- **My findings:** [what you discovered during reproduction; an
-  honest, evidenced cannot-reproduce that led you to re-pick or ask
-  the maintainer belongs here and costs you nothing]
+- **Commit showing reproduction:** None; the gap was verified against upstream commit `908cb5a93b511f1db62e20aab4975f4401f7c6d6` without changing the repository.
+- **Screenshots/logs:** The zero-match `git grep` result and complete eight-line `styleguide.md` source are recorded in `repro-draft.md`.
+- **My findings:** The documentation gap is current and reproducible. `docs/contribute/styleguide.md` is the smallest likely location because `CONTRIBUTING.md` already links to it, while a separate page would also require a `mkdocs.yml` navigation change.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: repro-check, used on the public claim and a rerunnable documentation-gap report.
+- What it produced: An accept verdict on all six required checks, including direct evidence that the guidance is absent at the pinned commit.
+- Difficulties: Its first accepted draft used a PowerShell-only read command and called a condensed excerpt complete.
+- What changed: I replaced that command with shell-neutral `git show`, restored the exact Markdown link and code fence, and added explicit Expected and Actual evidence.
 
 ---
 
@@ -211,9 +194,9 @@ observable named is not a strategy.]
 [A running log, added to as you work. Date each entry. What you
 built, decisions you made when you made them, wrong turns included.]
 
-**[Date]**
+**November 5, 2026**
 
-[Entry]
+I selected and claimed Lind #375 after the scout accepted it as a straightforward documentation task. I forked the repository, created a docs-only sparse checkout to avoid Windows case-collision noise from vendored Linux headers, recorded the repository rules in the excluded `CLAUDE.local.md`, and reproduced the missing guidance at upstream commit `908cb5a`.
 
 **[Date]**
 
