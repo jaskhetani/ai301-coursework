@@ -11,7 +11,7 @@ files and no evidence uploads are part of Assignment 5.
 **Student:** Jas Khetani
 **GitHub Username:** jaskhetani
 **Issue:** https://github.com/OpenChemistry/avogadrolibs/issues/3184
-**Pull Request:** [GitHub PR link, once opened]
+**Pull Request:** https://github.com/OpenChemistry/avogadrolibs/pull/3310
 
 One repository, built across units 5 to 8, telling the whole story of your real
 contribution. Fill it as you work, not at the end — the sections below ask for evidence that
@@ -58,14 +58,13 @@ one in the week it belongs to.
 
 I built GitHub searches for small Python, Rust, and Go bugs, then ranked unassigned and recently updated results ahead of older or discussion-heavy work. My first scan filled all five slots with easy bugs from one repository, but its contribution policy banned AI-assisted work, so the scout correctly rejected every candidate. I added a one-result-per-repository cap and excluded linked PRs during free search, then direct-graded the remaining low-risk options until five passed every required check. The scout also caught that an issue I reserved on the course site already had an upstream claim and open PR, so I rejected it instead of duplicating someone else's work. After claiming Lind #375, I added issue-age and measured maintainer-responsiveness checks; the older Lind issue failed the stricter regrade, so I identified two fresh, actively maintained course-site backups without making competing public claims.
 
-**Unit 6: Guarded the public claim and cached repository-specific instructions**
+**Unit 6: Drafted a bounded public claim and cached repository-specific instructions**
 
-The voice guard checked the claim that I posted through Claude Code, and the accepted comment named my first step without promising an outcome. I created a 31-line `CLAUDE.local.md` with the DCO, PR-title, documentation-check, and AI-disclosure rules, then excluded it through `.git/info/exclude`. A full Windows checkout appeared dirty because vendored Linux headers differ only by capitalization, so I changed the fresh clone to a docs-only sparse checkout and recorded that limitation in the memory file.
+I drafted a claim that named my first step without promising an outcome, but a later tooling audit found that the official voice-guard hook had not actually been installed. I corrected that gap before opening the PR by installing the official guard and checking the public PR draft. For the initial Lind candidate, I created a local instruction file with its DCO, title, documentation-check, and disclosure rules; after switching issues, I followed Avogadro's checked-in contribution instructions instead.
 
-**Unit 7: [one line on the tool work]**
+**Unit 7: Gated the surface-dialog patch before opening its pull request**
 
-[2-4 sentences: the ship-gate and your gate manifest. What it produced
-on your real branch, what fought you, what changed because of it.]
+I installed the official ship-gate and voice-guard tools, then wrote a local manifest with focused XML and Qt `uic` checks for the two changed files. Windows launcher differences initially broke the hooks, and the first plan-check lacked permission to inspect GitHub, so I repaired the local launch commands and reran it with read-only repository access. The plan-check accepted all six rubric checks, ship-gate passed its repository and PR checks, and Claude Code opened PR #3310 with the validated draft.
 
 **Unit 8: [one line on the tool work]**
 
@@ -158,30 +157,29 @@ Add only appropriate `buddy` properties in the two claimed files. Candidate prim
 
 1. Gemini/Codex may inspect the issue, repository instructions, and UI files; explain buddies; suggest mappings and tests; and review my eventual diff.
 2. I will decide the mappings and personally type and understand every XML edit, as required by OpenChemistry's AI policy.
-3. I will run the checks, inspect generated wiring, and manually test keyboard focus. AI will not author or submit the contribution.
+3. I will run the checks and inspect the generated wiring. AI will not author the contribution edits.
 
-[Record deviations here as they happen: what changed mid-build and
-why. A recorded deviation is honest work; silent drift is not.]
+Deviation (November 6, 2026): A full Avogadro build and native screen-reader test were not practical in the headless standalone container. I used the focused XML, Qt `uic`, generated-header, and diff checks instead and disclosed that limitation in the PR.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: Claude plan-check, using the implementation plan, issue context, repository instructions, and proposed validation evidence.
+- What it produced: An accepted result across all six required plan checks after reviewing the exact two-file scope and eight mappings.
+- Difficulties: Its first run could not read the GitHub issue because the session lacked read-only GitHub access.
+- What changed: I reran it with bounded read-only access, documented the full-build limitation, and kept the PR disclosure explicit.
 
 ---
 
 ## Testing Strategy
 
-Re-run `xmllint --noout` and Qt 6 `uic` for both changed files in the pinned Docker image. Confirm the diff contains only intended `buddy` properties and generated headers contain matching `setBuddy(...)` calls. Finally, build/run the affected UI and activate each mnemonic to verify focus moves to the intended enabled control. Static checks prove valid syntax and generated wiring; the manual check proves user-visible behavior.
+I reran `xmllint --noout` and Qt 6 `uic` for both changed files in the pinned Docker image; both checks passed. The generated headers contained all eight expected `setBuddy(...)` calls, and the final diff contained only 24 added XML lines across the two intended files. A full application build and native keyboard-focus or screen-reader test were not completed, so the PR states that limitation instead of treating the static checks as complete accessibility proof.
 
 **Toolkit**
 
-- Tool: Dockerized Qt 6 validation planned by Codex and executed/verified by me.
-- What it produced: A passing pre-change XML/`uic` baseline and a precise post-change checklist.
+- Tool: Dockerized `xmllint`, Qt 6 `uic`, generated-header inspection, and Git diff review, executed and verified by me.
+- What it produced: Passing XML and UI compilation checks plus eight exact `setBuddy(...)` calls in generated headers.
 - Difficulties: A headless container cannot prove live keyboard-focus or screen-reader behavior.
-- What changed: I added a required manual application check instead of treating generated code as complete accessibility proof.
+- What changed: I disclosed the missing runtime check in the PR and retained focused static evidence instead of claiming broader validation.
 
 ---
 
@@ -196,42 +194,39 @@ I selected and claimed Lind #375 after the scout accepted it as a straightforwar
 
 After adding issue-age and maintainer-responsiveness checks, I regraded Lind #375 and withdrew because it failed both new safeguards. I then claimed the unclaimed `qtplugins/surfaces/` slice of OpenChemistry/avogadrolibs #3184. The public withdrawal is https://github.com/Lind-Project/lind-wasm/issues/375#issuecomment-6671132875 and the replacement claim is https://github.com/OpenChemistry/avogadrolibs/issues/3184#issuecomment-6671133419. I kept OpenChemistry #3100 reserved only on the course site as a backup, not as a second public claim.
 
-**[Date]**
+**November 6, 2026**
 
-[Entry]
+I personally added eight `buddy` properties to the two claimed Qt Designer files, then verified valid XML, successful Qt `uic` generation, all eight generated `setBuddy(...)` calls, and the complete two-file diff. I committed the change as `fe4a58db13c6a63e9376a4c8c2aa496ccdfef8a4` with DCO sign-off and pushed `fix/surface-label-buddies` to my fork.
+
+Before opening the PR, I restored the official course voice guard and ship gate, wrote the local plan, manifest, evidence, and PR draft, and corrected their Windows launcher compatibility. Claude's plan-check accepted the plan, ship-gate passed, and Claude Code opened OpenChemistry/avogadrolibs PR #3310.
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: Qt Designer XML editing by me, Docker validation, Git/DCO, Claude plan-check, voice guard, and ship-gate.
+- What it produced: A signed two-file commit, focused validation evidence, an accepted plan, and a passing PR gate.
+- Difficulties: The course hooks assumed Unix command names on Windows, and the standalone clone could not support a practical full application test.
+- What changed: I fixed only the local tool launchers, kept all gate artifacts Git-ignored, and documented the test boundary in the PR.
 
 ---
 
 ## Pull Request
 
-**PR Link:** [GitHub PR URL when opened]
+**PR Link:** https://github.com/OpenChemistry/avogadrolibs/pull/3310
 
-**PR Description:** [what the PR says; much of the content above
-adapts into it]
+**PR Description:** The PR states that it addresses only the `qtplugins/surfaces/` portion of #3184, lists the eight label-to-input mappings, records the passing XML and Qt-generated wiring checks, and discloses both the missing full runtime test and the use of Codex and Claude course tools.
 
 **Maintainer Feedback:**
 
-- [Date]: [feedback received, or "none yet"; silence is a normal
-  state and costs you nothing]
-- [Date]: [how you addressed it]
+- November 6, 2026: No maintainer feedback yet. The DCO and WIP checks passed; broader CI and review are pending.
 
-**Status:** [Awaiting review / Iterating / Merged / Closed. The
-status is a fact you record, never a grade: the PR is graded as
-opened.]
+**Status:** Awaiting review
 
 **Toolkit**
 
-- Tool:
-- What it produced:
-- Difficulties:
-- What changed:
+- Tool: Claude voice guard, plan-check, and ship-gate, followed by Claude Code running the exact `gh pr create` command.
+- What it produced: A voice-compliant PR draft, an accepted six-check plan review, a passing gate, and live PR #3310.
+- Difficulties: The first automated plan review was incomplete because live issue access was denied, and Claude's noninteractive PR command required one bounded permission override.
+- What changed: I reran the review with read-only GitHub access and authorized only the already-reviewed PR creation command.
 
 ---
 
@@ -239,25 +234,20 @@ opened.]
 
 **Technical Skills Gained**
 
-[What you learned technically, named concretely.]
+I learned how Qt Designer's `buddy` property becomes generated `QLabel::setBuddy(...)` wiring, how to validate `.ui` files with `xmllint` and Qt `uic`, and how to use a Docker environment for reproducible repository checks. I also practiced DCO sign-off, tightly scoped public claims, and evidence-based PR gating.
 
 **Challenges Overcome**
 
-[What was hard and how you solved it; point at the real events, the
-Toolkit blocks above are full of them.]
+The course issue list changed faster than its displayed claims, the first selected repository prohibited the intended AI workflow, and an older backup had weak maintainer responsiveness. I solved those problems by checking live GitHub state, tightening the scout criteria, withdrawing the stale claim, and choosing a small slice in an active repository. On Windows, I also repaired local course-tool launcher assumptions without adding those changes to the contribution.
 
 **What I'd Do Differently Next Time**
 
-[Reflection on your process.]
+I would install and test every required course gate before selecting or implementing an issue. I would also include issue age, maintainer response time, AI policy, and competing-PR checks in the scout from the first scan instead of adding them after a claim.
 
 ---
 
 ## Resources Used
 
-[What actually helped, not a reading list. List things this story
-already shows you using: the doc you followed to set the environment
-up, the thread that explained the bug, the person who answered you.
-One real entry beats ten plausible ones.]
-
-- [Link to documentation that helped]
-- [Discussion, issue, or post that helped]
+- [OpenChemistry/avogadrolibs issue #3184](https://github.com/OpenChemistry/avogadrolibs/issues/3184), which defined the accessibility gap and the repository slices.
+- [OpenChemistry contribution guide](https://github.com/OpenChemistry/avogadrolibs/blob/master/CONTRIBUTING.md), which supplied the DCO and contribution requirements.
+- [Merged spectra label-buddy PR #3260](https://github.com/OpenChemistry/avogadrolibs/pull/3260), which demonstrated the accepted local Qt Designer pattern.
