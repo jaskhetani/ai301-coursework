@@ -66,10 +66,9 @@ I drafted a claim that named my first step without promising an outcome, but a l
 
 I installed the official ship-gate and voice-guard tools, then wrote a local manifest with focused XML and Qt `uic` checks for the two changed files. Windows launcher differences initially broke the hooks, and the first plan-check lacked permission to inspect GitHub, so I repaired the local launch commands and reran it with read-only repository access. The plan-check accepted all six rubric checks, ship-gate passed its repository and PR checks, and Claude Code opened PR #3310 with the validated draft.
 
-**Unit 8: [one line on the tool work]**
+**Unit 8: Installed a repository-calibrated PR monitor and chose to wait**
 
-[2-4 sentences: the PR-monitor and your playbook. What it read, what it
-drafted, what you did with the draft.]
+I wrote a one-page playbook from my voice rules and five recent outside-contributor PRs, whose first maintainer activity ranged from immediate to 30.6 hours, and set a conservative four-day nudge threshold. The monitor read PR #3310's checks, review state, thread, and quiet time, then drafted a private wait note because the PR had been open for less than a day. Its first full run exposed another Windows `claude` launcher mismatch, so I corrected the local launcher and reran successfully; after reviewing the draft, I posted nothing because the threshold was not met.
 
 ---
 
